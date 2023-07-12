@@ -1,0 +1,47 @@
+version : "3"
+services:
+  lv-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lv-web
+    depends_on:
+      - lv-pg
+    volumes:
+      - .:/var/www/html
+    restart: always
+    ports:
+      - "5555:80"
+      - "596:596"
+    environment:
+      APP_NAME: 'lv'
+      APP_DEBUG: 'true'
+      APP_URL: 'http://15.15.1.1'
+    networks:
+      lv-web-network:
+        ipv4_address: 15.15.1.1
+
+  lv-pg:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: test_db
+    container_name: lv-pg
+    volumes:
+      - lv-pg-disk:/var/lib/postgres
+    networks:
+      lv-web-network:
+        ipv4_address: 15.15.1.2
+
+# On-disk storage of DB data, when containers are stopped/removed
+volumes:
+  lv-pg-disk: {}
+
+# Local network for services running using this docker-compose config
+networks:
+  lv-web-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 15.15.0.0/16
