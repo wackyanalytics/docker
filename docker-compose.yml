@@ -35,8 +35,9 @@ services:
 
 # On-disk storage of DB data, when containers are stopped/removed
 volumes:
-  lv-pg-disk: {}
-
+  lv-pg-disk: {
+    name: lbp-pg-disk
+  }
 # Local network for services running using this docker-compose config
 networks:
   lv-web-network:
