@@ -39,6 +39,7 @@ volumes:
     name: lbp-pg-disk
   }
 # Local network for services running using this docker-compose config
+# todo:create one contianer that can connect with diffeerent container accross multiple projects
 networks:
   lv-web-network:
     ipam:
